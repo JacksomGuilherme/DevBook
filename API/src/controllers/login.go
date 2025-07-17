@@ -8,6 +8,7 @@ import (
 	"api/src/respostas"
 	"api/src/seguranca"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 )
@@ -41,7 +42,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if erro = seguranca.VerificarSenha(usuarioSalvoNoBanco.Senha, usuario.Senha); erro != nil {
-		respostas.Erro(w, http.StatusUnauthorized, erro)
+		respostas.Erro(w, http.StatusUnauthorized, errors.New("Usuário ou senha incorreto"))
 		return
 	}
 
@@ -50,6 +51,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		respostas.Erro(w, http.StatusInternalServerError, erro)
 		return
 	}
-	respostas.JSON(w, http.StatusOK, token)
+	w.Write([]byte(token))
 
 }
