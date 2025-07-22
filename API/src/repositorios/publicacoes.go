@@ -135,3 +135,73 @@ func (repositorio Publicacoes) Deletar(ID uint64) error {
 
 	return nil
 }
+
+// BuscarPorUsuario traz todas as publicações de um usuário específico do banco de dados
+func (repositorio Publicacoes) BuscarPorUsuario(usuarioID uint64) ([]modelos.Publicacao, error) {
+
+	linhas, erro := repositorio.db.Query(
+		`SELECT P.*, U.NICK FROM PUBLICACOES P 
+		 INNER JOIN USUARIOS U ON U.ID = P.AUTOR_ID 
+		 WHERE P.AUTOR_ID = ? `,
+		usuarioID,
+	)
+	if erro != nil {
+		return nil, erro
+	}
+	defer linhas.Close()
+
+	var publicacoes []modelos.Publicacao
+	for linhas.Next() {
+		var publicacao modelos.Publicacao
+		if erro = linhas.Scan(
+			&publicacao.ID,
+			&publicacao.Titulo,
+			&publicacao.Conteudo,
+			&publicacao.AutorID,
+			&publicacao.Curtidas,
+			&publicacao.CriadaEm,
+			&publicacao.AutorNick,
+		); erro != nil {
+			return nil, erro
+		}
+		publicacoes = append(publicacoes, publicacao)
+	}
+
+	return publicacoes, nil
+}
+
+// Curtir adiciona uma curtida da publicação no banco de dados
+func (repositorio Publicacoes) Curtir(ID uint64) error {
+	statement, erro := repositorio.db.Prepare(
+		"UPDATE PUBLICACOES SET CURTIDAS = CURTIDAS + 1 WHERE ID = ?",
+	)
+	if erro != nil {
+		return erro
+	}
+	defer statement.Close()
+
+	if _, erro = statement.Exec(ID); erro != nil {
+		return erro
+	}
+
+	return nil
+}
+
+// Descurtir subtrai uma curtida da publicação no banco de dados
+func (repositorio Publicacoes) Descurtir(ID uint64) error {
+	statement, erro := repositorio.db.Prepare(`
+		UPDATE PUBLICACOES SET CURTIDAS = 
+			CASE WHEN CURTIDAS > 0 THEN CURTIDAS - 1 ELSE 0 END 
+		WHERE ID = ?
+	`)
+	if erro != nil {
+		return erro
+	}
+	defer statement.Close()
+
+	if _, erro = statement.Exec(ID); erro != nil {
+		return erro
+	}
+
+	return nil
+}
