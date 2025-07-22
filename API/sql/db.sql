@@ -36,6 +36,6 @@ CREATE TABLE publicacoes(
     REFERENCES usuarios(id)
     ON DELETE CASCADE,
 
-    curtidas int default 0
-    criadaEm timestamp default current_timestamp
+    curtidas int default 0,
+    criadaEm timestamp default current_timestamp()
 );
