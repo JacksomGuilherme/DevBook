@@ -13,7 +13,7 @@ var (
 	// StringConexaoBanco é a string de conexão com o MySql
 	StringConexaoBanco = ""
 
-	// Porta onde a API vai estar rodando
+	// URL de onde a API está rodando
 	Host = "127.0.0.1"
 
 	// Porta onde a API vai estar rodando
