@@ -11,15 +11,16 @@ function criarUsuario(e){
     $.ajax({
         url: "/usuarios",
         method: "POST",
+        dataType: "json",
         data: {
             nome: $('#nome').val(),
             email: $('#email').val(),
             nick: $('#nick').val(),
             senha: $('#senha').val()
         }
-    }).done(function(){
+    }).done(function(retorno) {
         alert("Usuário cadastrado com sucesso!")
-    }).fail(function(){
-        alert("Erro ao cadastrar usuário!")
+    }).fail(function(response) {
+        alert(response.responseJSON.erro)
     })
 }

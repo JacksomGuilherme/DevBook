@@ -6,6 +6,11 @@ import (
 	"net/http"
 )
 
+// Erro representa a resposta de erro da API
+type Erro struct {
+	Erro string `json:"erro"`
+}
+
 // JSON retorna uma resposta em JSON para a requisição
 func JSON(w http.ResponseWriter, statusCode int, dados interface{}) {
 	w.Header().Set("Content-Type", "application/json")
@@ -17,11 +22,9 @@ func JSON(w http.ResponseWriter, statusCode int, dados interface{}) {
 	}
 }
 
-// Erro retorna um erro em formato JKON
-func Erro(w http.ResponseWriter, statusCode int, erro error) {
-	JSON(w, statusCode, struct {
-		Erro string `json:"erro"`
-	}{
-		Erro: erro.Error(),
-	})
+// TratarStatusCodDeErro trata as requisições com status code 400 ou superior
+func TratarStatusCodDeErro(w http.ResponseWriter, r *http.Response) {
+	var erro Erro
+	json.NewDecoder(r.Body).Decode(&erro)
+	JSON(w, r.StatusCode, erro)
 }
