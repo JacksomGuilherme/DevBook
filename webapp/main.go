@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	cookies "webapp/src/Cookies"
 	"webapp/src/config"
+	"webapp/src/cookies"
 	"webapp/src/router"
 	"webapp/src/utils"
 )
