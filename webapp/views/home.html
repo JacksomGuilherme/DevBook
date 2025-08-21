@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevBook - Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevBook - Home</title>
+  <link href="/assets/css/bootstrap.css" rel="stylesheet" />
 </head>
+
 <body>
-    <h2>Página Principal</h2>
+
+  {{ template "navbar" }}
+
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <!-- Coluna do formulário -->
+      <div class="col-md-5 mb-4">
+        <h3>Nova Publicação</h3>
+        <form id="nova-publicacao">
+          <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" class="form-control" name="titulo" id="titulo" required
+              placeholder="Insira o Título da publicação" />
+          </div>
+
+          <div class="mb-3">
+            <label for="conteudo" class="form-label">Conteúdo</label>
+            <textarea class="form-control" name="conteudo" id="conteudo" rows="4" required
+              placeholder="Insira o Conteúdo da publicação"></textarea>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Publicar</button>
+        </form>
+      </div>
+
+      <!-- Coluna das publicações -->
+      <div class="col-md-7 d-flex flex-column gap-3">
+        {{ range .Publicacoes }}
+          {{ if (eq .AutorID $.UsuarioID) }}
+            {{ template "publicacao-com-permissao" . }}
+          {{ else }}
+            {{ template "publicacao-sem-permissao" . }}
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+  </div>
+
+  {{ template "footer" }}
+
+  {{ template "scripts" }}
+
+  <script src="/assets/js/publicacoes.js"></script>
+
 </body>
+
 </html>

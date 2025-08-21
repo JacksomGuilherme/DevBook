@@ -1,7 +1,6 @@
 package rotas
 
 import (
-	"fmt"
 	"net/http"
 	"webapp/src/middlewares"
 
@@ -21,12 +20,12 @@ func Configurar(r *mux.Router) *mux.Router {
 	rotas := rotasLogin
 	rotas = append(rotas, rotasUsuarios...)
 	rotas = append(rotas, rotaHome)
+	rotas = append(rotas, rotasPublicacoes...)
 
 	for _, rota := range rotas {
 		if rota.RequerAutenticacao {
 			r.HandleFunc(rota.URI, middlewares.Logger(middlewares.Autenticar(rota.Funcao))).Methods(rota.Metodo)
 		} else {
-			fmt.Println("dentro do else")
 			r.HandleFunc(rota.URI, middlewares.Logger(rota.Funcao)).Methods(rota.Metodo)
 		}
 	}

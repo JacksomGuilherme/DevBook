@@ -42,7 +42,8 @@ func (repositorio Publicacoes) Buscar(usuarioID uint64) ([]modelos.Publicacao, e
 		SELECT DISTINCT P.*, U.nick FROM publicacoes P 
 		INNER JOIN usuarios U ON U.id = P.autor_id 
 		INNER JOIN seguidores S ON P.autor_id = S.usuario_id 
-		WHERE U.id = ? OR S.seguidor_id = ?`,
+		WHERE U.id = ? OR S.seguidor_id = ?
+		ORDER BY P.ID DESC`,
 		usuarioID, usuarioID)
 	if erro != nil {
 		return nil, erro
