@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevBook - Home</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    {{ template "navbar" }}
+
+
+    <main class="flex-fill">
+        <div class="container-fluid">
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5>Usuários Encontrados</h5>
+                            {{ range . }}
+                                <p class="card-text">
+                                    {{ .Nome }} - {{ .Nick }} - Membro Desde: {{ .CriadoEm.Format "02/01/2006" }}
+                                </p>
+                            {{ else }}
+                                <p class="card-text">
+                                    Nenhum usuário encontrado!
+                                </p>
+                            {{ end }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    {{ template "footer" }}
+
+    {{ template "scripts" }}
+
+    <script src="/assets/js/publicacoes.js"></script>
+
+</body>
+
+</html>
