@@ -1,0 +1,39 @@
+{{ define "modal-seguidores" }}
+
+<div class="modal fade" id="modal-seguidores" tabindex="-1" aria-labelledby="modalListaSeguidores" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalListaSeguidores">Seguidores</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ range .Seguidores }}
+        <div class="card mb-3 mx-auto">
+            <div class="row g-0 align-items-center">
+                <div class="col-3 d-flex align-items-center justify-content-center">
+                    <a href="/usuario/{{ .ID }}">
+                        <img class="img-fluid rounded-circle" src="https://avatar.iran.liara.run/username?size=75&username={{ .Nome }}" />
+                    </a>
+                </div>
+                <div class="col-6">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="/usuario/{{ .ID }}">{{ .Nick }}</a></h5>
+                        <p class="card-text">{{ .Nome }}</p>
+                    </div>
+                </div>
+                
+
+                </div>
+            </div>
+        {{ else }}
+            <p class="card-text text-muted text-center">
+                Nenhum seguidor por enquanto!
+            </p>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ end }}

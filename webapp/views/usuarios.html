@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevBook - Home</title>
+    <title>DevBook - Buscar usuários</title>
     <link href="/assets/css/bootstrap.css" rel="stylesheet" />
 </head>
 
@@ -45,15 +45,16 @@
                                                         {{ $SeguidoPeloUsuarioLogado = true }}
                                                     {{ end }}
                                                 {{ end }}
-
-                                            {{ if $SeguidoPeloUsuarioLogado }}
-                                                <button id="parar-de-seguir-{{ .ID }}" class="btn btn-secondary btn-sm" data-usuario-id="{{ .ID }}">
-                                                    Seguindo
-                                                </button>
-                                            {{ else }}
-                                                <button id="seguir-{{ .ID }}" class="btn btn-primary btn-sm" data-usuario-id="{{ .ID }}">
-                                                    Seguir
-                                                </button>
+                                            {{ if (ne .ID $.UsuarioLogadoID ) }}
+                                                {{ if $SeguidoPeloUsuarioLogado }}
+                                                    <button id="parar-de-seguir-{{ .ID }}" class="btn btn-secondary btn-sm" data-usuario-id="{{ .ID }}">
+                                                        Seguindo
+                                                    </button>
+                                                {{ else }}
+                                                    <button id="seguir-{{ .ID }}" class="btn btn-primary btn-sm" data-usuario-id="{{ .ID }}">
+                                                        Seguir
+                                                    </button>
+                                                {{ end }}
                                             {{ end }}
                                             </div>
                                         </div>
@@ -71,9 +72,7 @@
         </div>
     </main>
 
-
     {{ template "footer" }}
-
     {{ template "scripts" }}
 
     <script src="/assets/js/usuarios.js"></script>

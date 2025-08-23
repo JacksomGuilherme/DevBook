@@ -48,11 +48,16 @@
                                             {{ end }}
                                         </a>
                                     </div>
-                                    <div class="d-flex mb-3 flex-wrap">
-                                        <div class="me-4"><strong>{{ len .Usuario.Publicacoes }}</strong> publicações</div>
-                                        <div class="me-4"><strong>{{ len .Usuario.Seguidores }}</strong> seguidores
-                                        </div>
-                                        <div><strong>{{ len .Usuario.Seguindo }}</strong> seguindo</div>
+                                    <div class="d-flex gap-4 mb-3 flex-wrap">
+                                        <div><strong>{{ len .Usuario.Publicacoes }}</strong> publicações</div>
+                                        <a href="#" class="text-dark" data-bs-toggle="modal" data-bs-target="#modal-seguidores">
+                                            <strong>{{ len .Usuario.Seguidores }}</strong>
+                                             seguidores
+                                        </a>
+                                        <a href="#" class="text-dark" data-bs-toggle="modal" data-bs-target="#modal-seguindo">
+                                            <strong>{{ len .Usuario.Seguindo }}</strong>
+                                             seguindo
+                                        </a>
                                     </div>
                                     <div>
                                         <p class="mb-1"><strong>{{ .Usuario.Nome }}</strong></p>
@@ -82,6 +87,8 @@
 
     </main>
 
+    {{ template "modal-seguidores" .Usuario }}
+    {{ template "modal-seguindo" .Usuario }}
     {{ template "footer" }}
     {{ template "scripts" }}
 
