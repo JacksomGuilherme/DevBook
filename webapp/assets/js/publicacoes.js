@@ -4,6 +4,7 @@ $(document).on('click', '.descurtir-publicacao', descurtirPublicacao)
 $('.deletar-publicacao').on('click', deletarPublicacao)
 
 $('#atualizar-publicacao').on('click', atualizarPublicacoes)
+$('#descartar-alteracoes').on('click', descartarAlteracoes)
 
 function criarPublicacao(e){
     e.preventDefault()
@@ -96,31 +97,56 @@ function atualizarPublicacoes(){
     const btn = $(this)
     btn.prop('disabled', true)
 
-    const publicacaoId = btn[0].dataset.puglicacaoId
+    Swal.fire({
+        title: "Atenção!",
+        text: "Tem certeza que deseja salvar as alterações?",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        icon: "warning"
+    }).then((confirmacao) => {
+       if (!confirmacao) return
+       
+       const publicacaoId = btn[0].dataset.puglicacaoId
+   
+       $.ajax({
+           url: `/publicacoes/${publicacaoId}`,
+           method: 'PUT',
+           data: {
+               titulo: $('#titulo').val(),
+               conteudo: $('#conteudo').val(),
+           }
+       }).done(function(){
+           Swal.fire(
+               'Sucesso!',
+               'Publicação alterada com sucesso!',
+               'success'
+           ).then(function(){
+               window.location = "/home"
+           })
+       }).fail(function(){
+           Swal.fire(
+               'Ops...',
+               'Erro ao editar publicação!',
+               'error'
+           )
+       }).always(function(){
+           btn.prop('disabled', false)
+       })
+    })
 
-    $.ajax({
-        url: `/publicacoes/${publicacaoId}`,
-        method: 'PUT',
-        data: {
-            titulo: $('#titulo').val(),
-            conteudo: $('#conteudo').val(),
-        }
-    }).done(function(){
-        Swal.fire(
-            'Sucesso!',
-            'Publicação alterada com sucesso!',
-            'success'
-        ).then(function(){
-            window.location = "/home"
-        })
-    }).fail(function(){
-        Swal.fire(
-            'Ops...',
-            'Erro ao editar publicação!',
-            'error'
-        )
-    }).always(function(){
-        btn.prop('disabled', false)
+}
+
+function descartarAlteracoes(){
+    Swal.fire({
+        title: "Atenção!",
+        text: "Tem certeza que deseja descartar as alterações?",
+        showCancelButton: true,
+        cancelButtonText: "Cancelar",
+        icon: "warning"
+    }).then(function(confirmacao){
+       if (!confirmacao.value) return
+       
+       window.location = "/home"
     })
 }
 

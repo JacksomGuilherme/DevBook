@@ -12,18 +12,53 @@
 
     {{ template "navbar" }}
 
-
     <main class="flex-fill">
         <div class="container-fluid">
-            <div class="row mt-4">
-                <div class="col-12">
+            <div class="row mt-4 justify-content-center">
+                <div class="col-lg-4 col-md-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5>Usuários Encontrados</h5>
-                            {{ range . }}
-                                <p class="card-text">
-                                    {{ .Nome }} - {{ .Nick }} - Membro Desde: {{ .CriadoEm.Format "02/01/2006" }}
-                                </p>
+                            <h5 class="text-center">Usuários Encontrados</h5>
+                            {{ range .Usuarios }}
+                                <div class="card mb-3 mx-auto">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-3 d-flex align-items-center justify-content-center">
+                                            <a href="/usuario/{{ .ID }}">
+                                                <img class="img-fluid rounded-circle" src="https://avatar.iran.liara.run/username?size=100&username={{ .Nome }}" />
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><a href="/usuario/{{ .ID }}">{{ .Nick }}</a></h5>
+                                                <p class="card-text">{{ .Nome }}</p>
+                                                <p class="card-text"><small class="text-body-secondary">Membro Desde: {{ .CriadoEm.Format "02/01/2006" }}</small></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <div class="card-body d-flex justify-content-end align-items-center py-2">
+
+                                                {{ $SeguidoPeloUsuarioLogado := false }}
+
+                                                {{ range .Seguidores }}
+                                                    {{ if (eq .ID $.UsuarioLogadoID )}}
+                                                        {{ $SeguidoPeloUsuarioLogado = true }}
+                                                    {{ end }}
+                                                {{ end }}
+
+                                            {{ if $SeguidoPeloUsuarioLogado }}
+                                                <button id="parar-de-seguir-{{ .ID }}" class="btn btn-secondary btn-sm" data-usuario-id="{{ .ID }}">
+                                                    Seguindo
+                                                </button>
+                                            {{ else }}
+                                                <button id="seguir-{{ .ID }}" class="btn btn-primary btn-sm" data-usuario-id="{{ .ID }}">
+                                                    Seguir
+                                                </button>
+                                            {{ end }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {{ else }}
                                 <p class="card-text">
                                     Nenhum usuário encontrado!
@@ -41,7 +76,7 @@
 
     {{ template "scripts" }}
 
-    <script src="/assets/js/publicacoes.js"></script>
+    <script src="/assets/js/usuarios.js"></script>
 
 </body>
 

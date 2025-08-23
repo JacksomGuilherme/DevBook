@@ -122,5 +122,52 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.ExecutarTemplate(w, "usuarios", usuarios)
+	cookie, _ := cookies.Ler(r)
+	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	for i := range usuarios {
+		usuario, erro := modelos.BuscarUsuarioCompleto(usuarios[i].ID, r)
+		if erro != nil {
+			respostas.JSON(w, http.StatusUnprocessableEntity, respostas.Erro{Erro: erro.Error()})
+			return
+		}
+
+		usuarios[i] = usuario
+	}
+
+	utils.ExecutarTemplate(w, "usuarios", struct {
+		Usuarios        []modelos.Usuario
+		UsuarioLogadoID uint64
+	}{
+		Usuarios:        usuarios,
+		UsuarioLogadoID: usuarioLogadoID,
+	})
+}
+
+// CarregarPerfilDoUsuarios carrega a pagina do perfil de um usuário
+func CarregarPerfilDoUsuarios(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
+
+	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.Erro{Erro: erro.Error()})
+		return
+	}
+
+	usuario, erro := modelos.BuscarUsuarioCompleto(usuarioID, r)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.Erro{Erro: erro.Error()})
+	}
+
+	cookie, _ := cookies.Ler(r)
+	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	utils.ExecutarTemplate(w, "usuario", struct {
+		Usuario         modelos.Usuario
+		UsuarioLogadoID uint64
+	}{
+		Usuario:         usuario,
+		UsuarioLogadoID: usuarioLogadoID,
+	})
+
 }

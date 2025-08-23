@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DevBook - Atualizar Publicação - {{ .Titulo }}</title>
     <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+
+    <style>
+        .btn-bd-info {
+            --bs-btn-color: var(--bs-white);
+            --bs-btn-hover-color: var(--bs-white);
+            --bs-btn-active-color: var(--bs-btn-hover-color);
+            }
+    </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -27,8 +35,11 @@
                         <textarea class="form-control" name="conteudo" id="conteudo"
                             placeholder="Insira o conteúdo da sua publicação">{{ .Conteudo }}</textarea>
                     </div>
-                    <button id="atualizar-publicacao" class="btn btn-info" data-puglicacao-id="{{ .ID }}">
+                    <button id="atualizar-publicacao" class="btn btn-info btn-bd-info" data-puglicacao-id="{{ .ID }}">
                         Salvar Alterações
+                    </button>
+                    <button id="descartar-alteracoes" class="btn btn-danger">
+                        Descartar Alterações
                     </button>
                 </div>
             </div>

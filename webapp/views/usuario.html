@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevBook - {{ .Usuario.Nome }}</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    {{ template "navbar" }}
+
+    {{ $SeguidoPeloUsuarioLogado := false }}
+
+    {{ range .Usuario.Seguidores }}
+        {{ if (eq .ID $.UsuarioLogadoID )}}
+            {{ $SeguidoPeloUsuarioLogado = true }}
+        {{ end }}
+    {{ end }}
+
+    <main class="flex-fill">
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-12 col-md-4 text-center mb-3 mb-md-0">
+                                    <img class="rounded-circle img-fluid"
+                                        src="https://avatar.iran.liara.run/username?size=200&username={{ .Usuario.Nome }}"
+                                        alt="Avatar do usuário">
+                                </div>
+
+                                <div class="col-12 col-md-8">
+                                    <div class="d-flex align-items-center mb-2 flex-wrap">
+                                        <h4 class="me-3 mb-0">{{ .Usuario.Nick }}</h4>
+                                        <a href="#" class="card-link">
+                                            {{ if $SeguidoPeloUsuarioLogado }}
+                                                <button id="parar-de-seguir" class="btn btn-primary btn-sm" data-usuario-id="{{ .Usuario.ID }}">
+                                                    Deixar de Seguir
+                                                </button>
+                                            {{ else }}
+                                                <button id="seguir" class="btn btn-primary btn-sm" data-usuario-id="{{ .Usuario.ID }}">
+                                                    Seguir
+                                                </button>
+                                            {{ end }}
+                                        </a>
+                                    </div>
+                                    <div class="d-flex mb-3 flex-wrap">
+                                        <div class="me-4"><strong>{{ len .Usuario.Publicacoes }}</strong> publicações</div>
+                                        <div class="me-4"><strong>{{ len .Usuario.Seguidores }}</strong> seguidores
+                                        </div>
+                                        <div><strong>{{ len .Usuario.Seguindo }}</strong> seguindo</div>
+                                    </div>
+                                    <div>
+                                        <p class="mb-1"><strong>{{ .Usuario.Nome }}</strong></p>
+                                        <p class="text-muted mb-1">
+                                            Membro desde: {{ .Usuario.CriadoEm.Format "02/01/2006" }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center mt-4 g-2">
+                <div class="col-md-8 d-flex flex-column gap-3">
+                    {{ range .Usuario.Publicacoes }}
+                        {{ template "publicacao-sem-permissao" . }}
+                    {{else}}
+                        <div class="col-12 text-center">
+                            <p class="text-muted">Nenhuma publicação encontrada!</p>
+                        </div>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    {{ template "footer" }}
+    {{ template "scripts" }}
+
+    <script src="/assets/js/usuario.js"></script>
+    <script src="/assets/js/publicacoes.js"></script>
+
+</body>
+
+</html>
