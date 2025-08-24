@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevBook - Alterar Senha</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    {{ template "navbar" }}
+
+    <main class="flex-fill">
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card mb-3 mx-auto align-items-center">
+                        <div class="col-12">
+                            <div class="card-body">
+                                <h5 class="card-title">Alterar Senha</h5>
+
+                                <form action="" id="alterar-senha">
+                                    <div class="mb-2">
+                                        <label for="senha-atual" class="form-label">Senha Atual</label>
+                                        <input type="password" class="form-control" id="senha-atual" name="senhaAtual"
+                                            placeholder="Digite sua senha atual">
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label for="nova-senha" class="form-label">Nova Senha</label>
+                                        <input type="password" class="form-control" id="nova-senha" name="novaSenha"
+                                            placeholder="Digite a nova senha">
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <label for="confirmar-senha" class="form-label">Confirmar Nova Senha</label>
+                                        <input type="password" class="form-control" id="confirmar-senha" name="confirmarSenha"
+                                            placeholder="Confirme a nova senha">
+                                    </div>
+
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            Atualizar Senha
+                                        </button>
+
+                                        <button id="descartar-alteracoes" type="button" class="btn btn-warning btn-sm">
+                                            Descartar Alterações
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{ template "footer" }}
+    {{ template "scripts" }}
+
+    <script src="/assets/js/usuario.js"></script>
+
+</body>
+
+</html>

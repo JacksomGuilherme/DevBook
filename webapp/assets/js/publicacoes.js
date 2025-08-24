@@ -103,8 +103,8 @@ function atualizarPublicacoes(){
         showCancelButton: true,
         cancelButtonText: "Cancelar",
         icon: "warning"
-    }).then((confirmacao) => {
-       if (!confirmacao) return
+    }).then(function(confirmacao){
+       if (!confirmacao.value) return
        
        const publicacaoId = btn[0].dataset.puglicacaoId
    

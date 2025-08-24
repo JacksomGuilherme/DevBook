@@ -15,7 +15,6 @@
   <main class="flex-fill">
     <div class="container-fluid mt-4">
       <div class="row">
-        <!-- Coluna do formulário -->
         <div class="col-md-5 mb-4">
           <h3>Nova Publicação</h3>
           <form id="nova-publicacao">
@@ -35,7 +34,6 @@
           </form>
         </div>
 
-        <!-- Coluna das publicações -->
         <div class="col-md-7 d-flex flex-column gap-3">
           {{ range .Publicacoes }}
           {{ if (eq .AutorID $.UsuarioID) }}

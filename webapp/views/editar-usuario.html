@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevBook - Editar Usuário</title>
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    {{ template "navbar" }}
+
+    <main class="flex-fill">
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card mb-3 mx-auto">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-3 d-flex align-items-center justify-content-center">
+                                <a href="/usuario/{{ .ID }}">
+                                    <img class="img-fluid rounded-circle"
+                                        src="https://avatar.iran.liara.run/username?size=100&username={{ .Nome }}" />
+                                </a>
+                            </div>
+
+                            <div class="col-9">
+                                <div class="card-body">
+                                    <h5 class="card-title">Editar Usuário</h5>
+
+                                    <form action="" id="editar-usuario">
+                                        <div class="mb-2">
+                                            <label for="nome-{{ .ID }}" class="form-label">Nome</label>
+                                            <input type="text" class="form-control" id="nome" name="nome"
+                                                placeholder="Insira o seu nome" value="{{ .Nome }}">
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <label for="email-{{ .ID }}" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                placeholder="Insira o seu e-mail" value="{{ .Email }}">
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <label for="nick-{{ .ID }}" class="form-label">Nick</label>
+                                            <input type="text" class="form-control" id="nick" name="nick"
+                                                placeholder="Insira o seu nick" value="{{ .Nick }}">
+                                        </div>
+
+                                        <div class="d-flex gap-2 justify-content-end">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                Salvar Alterações
+                                            </button>
+
+                                            <button id="descartar-alteracoes" type="button" class="btn btn-warning btn-sm">
+                                                Descartar Alterações
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="mt-5 p-4 border-top">
+                <div class="text-center">
+                    <h5 class="text-danger">Excluir Conta</h5>
+                    <p class="text-muted">
+                        Essa ação é <strong>irreversível</strong>. Todos os seus dados serão apagados
+                        e você não poderá recuperar a conta.
+                    </p>
+                    <a id="deletar-usuario">
+                        <button type="button" class="btn btn-danger">
+                            Deletar minha conta
+                        </button>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    {{ template "footer" }}
+    {{ template "scripts" }}
+
+    <script src="/assets/js/usuario.js"></script>
+
+</body>
+
+</html>

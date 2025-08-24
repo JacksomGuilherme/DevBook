@@ -145,7 +145,7 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 }
 
 // CarregarPerfilDoUsuarios carrega a pagina do perfil de um usuário
-func CarregarPerfilDoUsuarios(w http.ResponseWriter, r *http.Request) {
+func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
 
 	usuarioID, erro := strconv.ParseUint(parametros["usuarioId"], 10, 64)
@@ -162,6 +162,11 @@ func CarregarPerfilDoUsuarios(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := cookies.Ler(r)
 	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
+	if usuarioID == usuarioLogadoID {
+		http.Redirect(w, r, "/perfil", 302)
+		return
+	}
+
 	utils.ExecutarTemplate(w, "usuario", struct {
 		Usuario         modelos.Usuario
 		UsuarioLogadoID uint64
@@ -170,4 +175,41 @@ func CarregarPerfilDoUsuarios(w http.ResponseWriter, r *http.Request) {
 		UsuarioLogadoID: usuarioLogadoID,
 	})
 
+}
+
+// CarregarPerfilDoUsuariosLogado carrega a pagina do perfil do usuário que está logado
+func CarregarPerfilDoUsuarioLogado(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := cookies.Ler(r)
+	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	usuario, erro := modelos.BuscarUsuarioCompleto(usuarioLogadoID, r)
+	if erro != nil {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.Erro{Erro: erro.Error()})
+		return
+	}
+
+	utils.ExecutarTemplate(w, "perfil", usuario)
+}
+
+// CarregarPaginalDeEdicaoDoUsuario carrega a pagina para editar os dados do usuário
+func CarregarPaginalDeEdicaoDoUsuario(w http.ResponseWriter, r *http.Request) {
+	cookie, _ := cookies.Ler(r)
+	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
+
+	canal := make(chan modelos.Usuario)
+	go modelos.BuscarDadosDoUsuario(canal, usuarioLogadoID, r)
+
+	usuario := <-canal
+
+	if usuario.ID == 0 {
+		respostas.JSON(w, http.StatusInternalServerError, respostas.Erro{Erro: "Erro ao buscar o usuário"})
+		return
+	}
+
+	utils.ExecutarTemplate(w, "editar-usuario", usuario)
+}
+
+// CarregarPaginalDeAtualizacaoDeSenha carrega a pagina para atualizar a senha do usuário
+func CarregarPaginalDeAtualizacaoDeSenha(w http.ResponseWriter, r *http.Request) {
+	utils.ExecutarTemplate(w, "atualizar-senha", nil)
 }

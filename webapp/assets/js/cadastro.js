@@ -27,7 +27,9 @@ function criarUsuario(e){
             "Sucesso!",
             "Usuário cadastrado com sucesso!",
             "success"
-        )
+        ).then(function(){
+            window.location = "/login"
+        })
     }).fail(function(response) {
         Swal.fire(
             "Ops...",
