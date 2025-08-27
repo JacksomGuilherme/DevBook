@@ -27,9 +27,6 @@ A ideia principal foi aplicar de forma prática os fundamentos de **Golang**, tr
 
 ## 📸 Screenshots
 
-Você pode incluir imagens da aplicação na pasta `docs/screenshots` (ou `assets/screenshots`) e depois referenciá-las aqui no README.  
-Exemplo:
-
 ### Página de Login
 ![Login](docs/screenshots/login.jpg)
 
